@@ -230,12 +230,24 @@ for \hyperlink{sGROUPRhy}{GROUPR}.
   There is an illegal or unrecognizable \cword{mf} value on \cword{nin}.
 
 \item[\cword{error in moder***should have found send card}] ~\par
-  MODER is lost.  The listed data display the contents of the last card
-  read.  Input data file may be bad.
+  MODER expected the end of a section but found actual data.
+  The listed data display the contents of the last card
+  read.  Input data file may be bad or may use a format not yet implemented.
 
 \item[\cword{error in moder***illegal covariance mf=nn}] ~\par
   ERRORR-format file is missing the required \cword{mf}=3.
   ENDF and PENDF tapes must be \cword{mat} ordered.
+
+\item[\cword{error in file1***bad LFC in mt=458.}] ~\par
+  There is a bad value for the \cword{LFC} value in \cword{mf}=1 \cword{mt}=458.
+  Only 0 or 1 are allowed.
+
+\item[\cword{error in file1***bad LO in mt=460.}] ~\par
+  There is a bad value for the \cword{LO} value in \cword{mf}=1 \cword{mt}=460.
+  Only 0 or 1 are allowed.
+
+\item[\cword{error in file1***illegal mt}] ~\par
+  Only the standard \cword{mt}=451 to 458 and 460 are allowed in File 1.
 
 \item[\cword{error in file2***illegal mt}] ~\par
   Only the standard \cword{mt}=151 and the NJOY special values of \cword{mt}=152
@@ -253,6 +265,16 @@ for \hyperlink{sGROUPRhy}{GROUPR}.
 \item[\cword{error in file6***illegal endf6 law}] ~\par
   This message comes from the branch used for ENDF-6 tapes.
   Check the values for the law parameter in the sections of File 6.
+  Only law values 0 to 7 are allowed. In the case of fission, negative law values
+  are also allowed.
+
+\item[\cword{error in file6***illegal endf6 law for mt=nnn}] ~\par
+  This message comes from the branch used for ENDF-6 tapes.
+  Check the values for the law parameter in the corresponding section of File 6.
+  Negative law values are only allowed for fission (mt=18).
+
+\item[\cword{error in file7***bad NS in mt4.}] ~\par
+  The number of non-principal scattering atom types NS cannot be larger than 3.
 
 \item[\cword{error in file7***illegal mt=nnn}] ~\par
   Only \cword{mt}=2 and \cword{mt}=4 are allowed in File 7 for the ENDF-6
@@ -261,8 +283,25 @@ for \hyperlink{sGROUPRhy}{GROUPR}.
 \item[\cword{error in file7***illegal value of lthr=n}] ~\par
   Only values of 1 or 2 are allowed for \cword{lthr} in ENDF-6.
 
+\item[\cword{error in file12***bad LO in mt=460.}] ~\par
+  There is a bad value for the \cword{LO} value in \cword{mf}=1 \cword{mt}=460.
+  Only 0, 1 or 2 are allowed.
+
 \item[\cword{error in file15***illegal lf}] ~\par
   Only \cword{lf}=1 and the special lanl format \cword{lf}=2 are allowed
+
+\item[\cword{error in file32***illegal value of ndigit}] ~\par
+  There is a bad value for the \cword{NDIGIT} value in \cword{mf}=32.
+  Only 0 or 2 to 6 are allowed.
+
+\item[\cword{error in file32***illegal value of lcomp}] ~\par
+  There is a bad value for the \cword{LCOMP} value in \cword{mf}=32.
+  Only 0, 1 or 2 are allowed.
+
+% The following error messages are in the source code but ISR is no longer referenced
+% the ENDF manual. These might be obsolete.
+% \item[\cword{error in file32***unknown isr}] ~\par
+% \item[\cword{error in file32***isr>0 not supported for lrf=7}] ~\par
 
 \end{singlespace}
 \end{description}

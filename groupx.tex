@@ -2525,8 +2525,9 @@ up-to-date input instructions.
    !    gamma    fraction of admixed moderator cross section in
    !              external moderator cross section (def=0)
    ! card8b     tabulated (iwt=1 or -1 only)
-   !    wght    read weight function as tab1 record.
-   !            end with a /.
+   !    wght    read weight function as tab1 record,
+   !            this may span multiple lines and ends with a /.
+   !            
    ! card8c     analytic flux parameters (iwt=4 or -4 only)
    !    eb      thermal break (ev)
    !    tb      thermal temperature (ev)
@@ -2823,25 +2824,25 @@ Just as in the case of group structures, an arbitrary weight
 function can be read in (see \cword{card8b}).  This function is
 presented to GROUPR as an ENDF/B ``TAB1'' record.  This means that a
 count of $E,C(E)$ pairs and one or more interpolation schemes are given.
-For the case of a single interpolation scheme, the input cards would be
 
-\small
-\begin{ccode}
-
-   0. 0. 0 0 1 N N INT
-   E1 C(E1) E2 C(E2) ... / card8b
-
-\end{ccode}
-\normalsize
+An ENDF/B ``TAB1'' record consists of three distinct parts:
+\begin{itemize}
+\item two double values and four integer values of which only the last
+two integers (the number of interpolation ranges \cword{NR} and the number
+of $E,C(E)$ pairs \cword{NP}) are needed to read the remainder of the record
+\item the interpolation scheme data which is a sequence of \cword{NR} pairs
+of \cword{NBT} (index of the $E,C(E)$ pair corresponding to the end of
+interpolation range) and \cword{INT} (the interpolation type)
+\item the tabulated data which is a sequence of \cword{NP} $E,C(E)$ pairs
+\end{itemize}
 
 \noindent
-where \cword{N} is the count of E, C(E) pairs, and \cword{INT} specifies the
-interpolation law to be used for values of E between the grid values E$_1$,
-E$_2$, ... according to the following schemes:
+The interpolation type \cword{INT} specifies the interpolation law to be used in the
+interpolation range. It can take the following values:
 
 \begin{center}
 \begin{tabular}{cl}
-INT & Meaning \\ \hline
+\cword{INT} & Meaning \\ \hline
 1 & histogram\\
 2 & linear-linear\\
 3 & linear-log\\
@@ -2851,11 +2852,55 @@ INT & Meaning \\ \hline
 \end{center}
 
 \noindent
-For example, INT=5 specifies that ln$C$ is a linear function of ln$E$
-in each panel $E_i\le E<E_j$.  Similarly, INT=4 specifies that ln$C$ is
-a linear function of $E$ in each panel.  As many physical lines as are
-needed can be used for ``\cword{card8b}'', as long as the terminating
-slash is included.
+For example, \cword{INT}=5 specifies that ln$C$ is a linear function of ln$E$.
+Similarly, INT=4 specifies that ln$C$ is a linear function of $E$.
+
+\noindent
+In its most general form, these input cards would be
+
+\small
+\begin{ccode}
+
+   0.      0.      0       0       NR      NP
+   NBT(1)  INT(1)    ...   NBT(NR) INT(NR)
+   E(1)    C(1)      ...   E(NP)   C(NP)        / card8b
+
+\end{ccode}
+\normalsize
+
+\noindent
+For example, a function using two interpolation ranges: the first one
+between 1e-5 eV and 100 eV using a histogram and the second one between
+100 eV and 20 MeV using lin-lin interpolation)
+
+\small
+\begin{ccode}
+
+   0.      0.      0       0       2       6
+   3       1       6       2
+   1e-5    0.5     1.      0.75    100.    0.8
+   1e+6    0.85    1.5e+6  0.9     2.0e+7  1.0  / card8b
+
+\end{ccode}
+\normalsize
+
+\noindent
+For the special case of a single interpolation scheme, the input cards
+are simplified as follows
+
+\small
+\begin{ccode}
+
+   0.      0.      0       0       1       NP
+   NP      INT
+   E(1)    C(1)      ...   E(NP)   C(NP)        / card8b
+
+\end{ccode}
+\normalsize
+
+\noindent
+As many physical lines as are needed can be used for ``\cword{card8b}'',
+as long as the terminating slash is included.
 
 One of the weighting options, IWT=4, is a generalized
 ``$1/E$+fission+thermal'' function where the thermal temperature,

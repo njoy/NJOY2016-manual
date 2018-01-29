@@ -2527,7 +2527,6 @@ up-to-date input instructions.
    ! card8b     tabulated (iwt=1 or -1 only)
    !    wght    read weight function as tab1 record,
    !            this may span multiple lines and ends with a /.
-   !            
    ! card8c     analytic flux parameters (iwt=4 or -4 only)
    !    eb      thermal break (ev)
    !    tb      thermal temperature (ev)
@@ -2641,6 +2640,8 @@ up-to-date input instructions.
    !    3zzzaaam       nuclide production for zzzaaam
    !                     subsection from file 9
    !    4zzzaaam       nuclide production for zzzaaam
+   !                     subsection from file 10
+   !    40000000       fission product production (mtd=18 only)
    !                     subsection from file 10
    !
    !     mtd          meaning
@@ -3237,6 +3238,7 @@ be used when processing cross sections:
 \item[2zzzaaam] nuclide production for zzzaaam from a subsection of MF=6
 \item[3zzzaaam] nuclide production for zzzaaam from a subsection of MF=9
 \item[4zzzaaam] nuclide production for zzzaaam from a subsection of MF=10
+\item[40000000] fission product production from the MT=18 subsection of MF=10
 \end{singlespace}
 \end{list}
 
@@ -3250,6 +3252,21 @@ from Tape 532:
 
    30471090 102 '(n,g) TO g.s.'/
    30471091 102 '(n,n) to isomer'/
+
+\end{ccode}
+\normalsize
+
+\noindent
+Since ENDF/B-VIII.0, some non-fissile nuclides can have an MT=18 section (fission)
+in MF=10 (radioactive isotope production) to represent breakup due to high energy
+particles. In these cases, it is often not possible to designate a specific nuclide,
+which is why the \cword{mfd} value is set to \cword{40000000}. In such a case, the
+following input will make GROUPR process this part of the ENDF file:
+
+\small
+\begin{ccode}
+
+   40000000  18 'HE breakup' /
 
 \end{ccode}
 \normalsize
@@ -4350,7 +4367,7 @@ chapter of this manual.
 \subsection{Error Messages}
 \label{ssGROUPR_msg}
 
-The fatal error messages and warning message from GROUPR
+The fatal error messages and warning messages from GROUPR
 are listed below, along with recommended actions to recover
 from the problem.
 
@@ -4377,13 +4394,6 @@ from the problem.
 \item[\cword{error in groupr***unable to find next temp.}] ~\par
   The current material ended before the requested temperature was found.
 
-\item[\cword{error in ruinb***ntemp=0 not allowed.}] ~\par
-  There must be at least one temperature requested.
-
-\item[\cword{error in ruinb***nsigz=0 not allowed.}] ~\par
-  There must be at least one background cross section.  The first input
-  value is automatically changed to 1e10.
-
 \item[\cword{error in gengpn***read-in group structure is out of order.}] ~\par
   Group structures must be given in ascending energy order.
 
@@ -4393,10 +4403,10 @@ from the problem.
 \item[\cword{error in gengpg***illegal group structure.}] ~\par
   Check input; current legal values are 1 through 10.
 
-\item[\cword{error in genwtf***exceeded storage reading user weight ...}] ~\par
+\item[\cword{error in genwtf***exceeded storage reading user weight function}] ~\par
   See the allocatable array \cword{tmp} with length \cword{ntmp}=10000.
 
-\item[\cword{error in genwtf***illegal weight function requested.}] ~\par
+\item[\cword{error in genwtf***illegal weight function.}] ~\par
   Check input; current legal values are $-$12 through $+$12.
 
 \item[\cword{error in genflx***total not defined over energy range.}] ~\par
@@ -4404,6 +4414,10 @@ from the problem.
   means that ``dosimetry'' and ``activation'' tapes, which normally give
   only a few key reactions, can only be processed using
   \cword{nsigz}=1 (infinite dilution).
+
+\item[\cword{error in getfwt***temperature ...}] ~\par
+  The requested temperature could not be found while searching the tape.
+  NJOY uses a tolerance of 1e-6 for this purpose.
 
 \item[\cword{error in getfwt***e outside range of data.}] ~\par
   A premature end-of-file was found on the input flux tape when
@@ -4421,20 +4435,23 @@ from the problem.
   machine (for example, 1.00000001 is \underbar{not} greater than unity
   on a 32-bit machine).
 
-\item[\cword{error in panel***bad nq}] ~\par
+\item[\cword{error in panel***bad nq in panel}] ~\par
   The nq parameter can be 2, 6, or 10 with the currently installed
   quadratures.
+
+\item[\cword{message from panel---thermal range problem at ...}] ~\par
+  NJOY expected scattering to a specific group but found another instead.
 
 \item[\cword{error in getyld***illegal lnd.}] ~\par
   The maximum number of time groups is 8.  See global array \cword{dntc(8)}.
 
-\item[\cword{error in getyld***requested nuclide not found.}] ~\par
+\item[\cword{error in getyld***unable to find nuclide for iza=... lfs=...}] ~\par
   Unable to find requested nuclide production yield.
 
 \item[\cword{error in getsig***illegal mt.}] ~\par
   Check input for \cword{mtd}.
 
-\item[\cword{error in getsig***desired lfs not found.}] ~\par
+\item[\cword{error in getsig***can't find mf,mt,lfs ...}] ~\par
   Check input for \cword{mfd} greater than 10000000.
 
 \item[\cword{message from stounr---no unresolved sigma zero data....}] ~\par
@@ -4463,7 +4480,11 @@ from the problem.
   Check your \hyperlink{sBROADRhy}{BROADR} and
   \hyperlink{sUNRESRhy}{UNRESR} or \hyperlink{sPURRhy}{PURR} runs.
 
-\item[\cword{error in getff***do not know how to handle ...}] ~\par
+\item[\cword{message from getunr---Warning, negative URR cross sections found}] ~\par
+  NJOY found negative cross sections for the unresolved energy range from
+  \hyperlink{sUNRESRhy}{UNRESR}.
+
+\item[\cword{error in getff***do not know how to handle mf,mt ...}] ~\par
   The \cword{getff} routine branches to different blocks of coding
   for different combinations of \cword{mfd} and \cword{mtd}, but
   if no appropriate branch is found for the current values, this
@@ -4488,7 +4509,7 @@ from the problem.
 \item[\cword{error in getmf6***storage exceeded.}] ~\par
   See the allocatable array \cword{temp} with length \cword{ntmp}=990000.
 
-\item[\cword{message from getmf6---bad grids for corresponding point....}] ~\par
+\item[\cword{message from getmf6---bad grids for corresponding point ...}] ~\par
   Corresponding-point interpolation won't work correctly unless
   the two grids above and below the point of interest have the
   same number of points.  This message means that there is an
@@ -4498,13 +4519,26 @@ from the problem.
   We currently allow for no more than three.  See \cword{iyss(3)},
   \cword{izss(3)}, and \cword{jss(3)}.
 
+\item[\cword{message from getmf6---there are multiple subsections in mf6}] ~\par
+  This warning message is issued when a specific particle has multiple
+  subsections in an mf6 section.
+
 \item[\cword{error in cm2lab***storage exceeded.}] ~\par
   This means that the allocatable array \cword{tmp} with length
   \cword{ntmp}=990000 in subroutine \cword{getmf6} has run out of space.
 
+\item[\cword{message from cm2lab---lab normalization problem mt=... e=...}] ~\par
+  This warning message is issued when the integral after normalisation
+  to the lab system is different from 1 by more than 1\%.
+
 \item[\cword{error in f6ddx***illegal lang.}] ~\par
   The value of \cword{lang} for tabulated angular distributions
   must be in the range 11-15.
+
+\item[\cword{message from cm2lab---vertical segment(s) in distribution}] ~\par
+  There appears to be a jump in the energy dependent multiplicity for the
+  outgoing particle at a given incident energy. This message is only given
+  when Kalbach-Mann systematics are used. This is most likely an evaluation problem.
 
 \item[\cword{error in bach***dominant isotope not known.}] ~\par
   The calculation of the neutron separation energy needed for
@@ -4525,17 +4559,21 @@ from the problem.
   The current limit is \cword{mxlg}=65.
 
 \item[\cword{error in f6lab***illegal lang.}] ~\par
-  The value of \cword{lang} must be in the range 11-15 for tabulated
-  angular distributions.
+  The value of \cword{lang} must be equal to 1 or be in the range 11-15 for
+  tabulated angular distributions.
+
+\item[\cword{error in f6dis***illegal lang.}] ~\par
+  The value of \cword{lang} must be equal to 1 or 2, or be in the range 11-15
+  for tabulated angular distributions.
 
 \item[\cword{error in getdis***illegal nqp}] ~\par
   The allowed quadrature orders are 4, 8, 12, and 20.
 
-\item[\cword{error in getfle***desired energy above highest energy...}] ~\par
+\item[\cword{error in getfle***desired energy above highest energy given}] ~\par
   Should not occur for well-constructed ENDF files.  Check the evaluation
   to be sure File 3 and File 4 are consistent.
 
-\item[\cword{message from getfle---lab distribution changed to cm.}] ~\par
+\item[\cword{message from getfle---lab distribution changed to cm for mt=...}] ~\par
   Angular distributions for two-body reactions are supposed to be given
   in the CM frame by ENDF conventions.  Some old evaluations for heavy
   materials violate this rule; changing to the CM frame has little effect
@@ -4594,8 +4632,18 @@ from the problem.
   This patch is used to correct the old ENDF/B-III evaluations
   for MAT=1149 and MAT=1150 (chlorine and potassium).
 
+\item[\cword{message from conver---mf12, mt ... may be missing}] ~\par
+  This message indicates that the discrete photon data in mf12 for this
+  mt number may be missing or be incomplete.
+
 \item[\cword{error in conver***nnth too large}] ~\par
   See \cword{mxnnth}=350.
+
+\item[\cword{message from conver---skipping new mf6/mt18 multiplicity section}] ~\par
+  Starting with ENDF/B-VIII.0, fission neutrons and photons can now be described
+  using probability functions for emitting 0, 1, 2, ... particles per fission. This
+  data can currently not be included in any multigroup or continuous energy format so
+  the data is simply skipped.
 
 \item[\cword{error in conver***too many lo=2 gammas.}] ~\par
   The LO=2 processing uses a set of allocatable arrays that are
@@ -4616,9 +4664,14 @@ from the problem.
 \item[\cword{error in getsed***too many subsections.}] ~\par
   The current limit is 20.  See the parameter \cword{nkmax}=20.
 
-\item[\cword{error in getsed***storage n tmp exceeded.}] ~\par
+\item[\cword{error in getsed***storage tmp exceeded.}] ~\par
   The input ENDF data are stored in the allocatable array \cword{tmp}
-  with length \cword{ntmp}=50000.
+  with length \cword{ntmp}=50000. An integer will be included in this
+  message to indicate where exactly in the source code this message was
+  issued.
+
+\item[\cword{message from getsed---corresponding point interpolation ...}] ~\par
+  The interpolation schemes corresponding to the range 11-15 are not supported.
 
 \item[\cword{message from getsed---upscatter correction....}] ~\par
   This reaction should not have upscatter.  The error is placed

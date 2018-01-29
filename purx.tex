@@ -728,9 +728,13 @@ for plotting the probability distribution (see Fig.~\ref{totpd}).
 \item[\cword{error in purr***nbin should be 15 or more}] ~\par
 The construction of the cross sections bins requires this.
 
+\item[\cword{error in purr***maxscr is too small, increase to at least ...}] ~\par
+
 \item[\cword{error in purr***not enough scratch space}] ~\par
 The amount of space in the allocatable array \cword{a} has been
 exceeded.  See \cword{maxscr}=20000 in the subroutine \cword{purr}.
+
+\item[\cword{error in rdf2un***storage in a exceeded}] ~\par
 
 \item[\cword{error in rdf2un***storage exceeded}] ~\par
 The amount of space in the allocatable array \cword{arry} has
@@ -745,7 +749,7 @@ has been exceeded.
 The NAPS parameter on the ENDF file can be 0, 1, or 2 with
 \cword{nro} equal to 1 only.  Check the evaluation.
 
-\item[\cword{error in unresx***too many sequences}] ~\par
+\item[\cword{error in unresx***too many sequences, increase mxns0}] ~\par
 The limit of 100 spin sequences allowed in subroutine
 \cword{unresx} has been exceeded.  See \cword{mxns0}=100.
 
@@ -756,6 +760,14 @@ set in \cword{purr}.  It controls the length of several allocatable
 arrays that are defined in subroutine \cword{purr}, such as \cword{er},
 \cword{gnr}, and so on.
 
+\item[\cword{error in unrest***bad value for nres or emin>emax, increase dmin}] ~\par
+In order to generate the probability table, purr generates a number of
+resonances over a given energy range. To determine the value of these
+parameters, purr uses the lowest value of the level density. If a negative
+value is obtained for \cword{nres}, or if \cword{emin} is larger than
+\cword{emax}, something has gone wrong. Adjusting \cword{dmin} to an even
+higher value (default of 100000) might help.
+
 \item[\cword{error in rann***failed}] ~\par
 The random number generator failed.
 
@@ -763,6 +775,34 @@ The random number generator failed.
   The \cword{nbin} size specified is too large for PURR's internal
   arrays.  Either decrease the input \cword{nbin} or increase the
   PURR's \cword{nsamp} variable.
+
+\item[\cword{message from purr---ptable has ... zero probability bins}] ~\par
+  When generating a probability table at a given energy, purr has detected
+  a number of bins that have a zero probability associated to them. This
+  might indicate an issue with the probability table itself.
+
+\item[\cword{message from purr---ptable has ... negative xs values}] ~\par
+  When generating a probability table at a given energy, purr has detected
+  that some cross section values are actually negative. This is most likely
+  due to a large negative background cross section defined in MF=3 for the
+  current energy.
+
+\item[\cword{message from purr---no heating found on pendf}] ~\par
+
+\item[\cword{message from purr---no partial heating xsecs found on pendf}] ~\par
+  Heating values are added to the probability tables. These messages indicate
+  that the user forgot to either include a heatr run or to request partial
+  KERMA data in the heatr run (e.g. 318 for the fission KERMA).
+
+\item[\cword{message from purr---mat has no resonance parameters}] ~\par
+
+\item[\cword{message from purr---mat has no unresolved resonance parameters}] ~\par
+  Probability tables can only be generated when unresolved resonance parameters
+  are defined for the material.
+
+\item[\cword{message from purr---resolved-unresolved overlap energies}] ~\par
+  The resolved and unresolved energy region appear to overlap. This may indicate an
+  issue in the evaluation.
 
 \end{singlespace}
 \end{description}

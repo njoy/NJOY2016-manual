@@ -2488,6 +2488,10 @@ up-to-date input instructions.
    !    nsigz   number of sigma zeroes (default=1)
    !    iprint  long print option (0/1=minimum/maximum)
    !            (default=1)
+   !    ismooth switch on/off smoothing operation (1/0, default=1=on)
+   !            set ismooth to 1 to enable sqrt(e) smoothing for
+   !            mf6 cm emission spectra at low energies and for
+   !            histogram delayed neutron spectra at low energies.
    ! card3
    !    title   run label (up to 80 characters delimited by quotes,
    !            ended with /)  (default=blank)
@@ -2511,10 +2515,11 @@ up-to-date input instructions.
    !          weight function options (8a,8b,8c,8d)
    ! card8a     flux calculator parameters (iwt.lt.0 only)
    !    fehi    break between computed flux and bondarenko flux
-   !            (must be in resolved resonance range)
+   !            (must be in the resolved resonance range)
    !    sigpot  estimate of potential scattering cross section
    !    nflmax  maximum number of computed flux points
    !    ninwt   tape unit for new flux parameters (default=0)
+   !            note: weighting flux file is always written binary
    !    jsigz   index of reference sigma zero in sigz array
    !            (default=0)
    !    alpha2   alpha for admixed moderator (def=o=none)
@@ -2533,7 +2538,7 @@ up-to-date input instructions.
    !    ec      fission break (ev)
    !    tc      fission temperature (ev)
    ! card8d     input resonance flux (iwt=0 only)
-   !    ninwt   tape unit for flux parameters
+   !    ninwt   tape unit for flux parameters (binary)
    !
    ! card9
    !    mfd     file to be processed
@@ -2649,6 +2654,7 @@ up-to-date input instructions.
    !     -n           process all mt numbers from the previous
    !                          entry to n inclusive
    !     221-250      reserved for thermal scattering
+   !     257          average energy
    !     258          average lethargy
    !     259          average inverse velocity (m/sec)
    !
@@ -4393,6 +4399,9 @@ from the problem.
 
 \item[\cword{error in groupr***unable to find next temp.}] ~\par
   The current material ended before the requested temperature was found.
+
+\item[\cword{error in ruinb***illegal ismooth.}] ~\par
+  Check the input, the value for the smoothing option must be either 0 or 1.
 
 \item[\cword{error in gengpn***read-in group structure is out of order.}] ~\par
   Group structures must be given in ascending energy order.

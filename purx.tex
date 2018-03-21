@@ -776,10 +776,17 @@ The random number generator failed.
   arrays.  Either decrease the input \cword{nbin} or increase the
   PURR's \cword{nsamp} variable.
 
-\item[\cword{message from purr---ptable has ... zero probability bins}] ~\par
-  When generating a probability table at a given energy, purr has detected
-  a number of bins that have a zero probability associated to them. This
-  might indicate an issue with the probability table itself.
+\item[\cword{message from purr---reset ibin=1 (or =nsamp), consider ...}] ~\par
+  The \cword{nbin} size specified is too large for PURR's internal
+  arrays.  Either decrease the input \cword{nbin} or increase the
+  PURR's \cword{nsamp} variable.
+
+\item[\cword{message from purr---total xs less than its components at e=...}] ~\par
+  This message can appear for evaluations using LSSF=1 when the total
+  cross section is smaller than the sum of its components. Using the data as is
+  could result in the appearance of negative cross sections in the probability
+  table, which is why PURR will set all backgrounds to 0 if this happens. This
+  is an error in the evaluation and it should be corrected.
 
 \item[\cword{message from purr---ptable has ... negative xs values}] ~\par
   When generating a probability table at a given energy, purr has detected

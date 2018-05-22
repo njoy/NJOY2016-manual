@@ -108,7 +108,7 @@ charged particles:
 \vspace{0.5 pt}
 
 \noindent
-where $Q_{ij}$ is the mass-difference Q value for material $i$ and
+where $Q_{ij}$ is the mass-difference $Q$-value for material $i$ and
 reaction $j$, $\overline{E}_n$ is the total energy of secondary
 neutrons including multiplicity, and $\overline{E}_\gamma$ is the
 energy of secondary photons including photon yields.
@@ -142,7 +142,7 @@ employed.
 
 A final problem with the energy-balance method occurs for the
 elemental evaluations\index{elemental heating} common in earlier
-versions of ENDF/B.  Isotopic Q values and cross sections
+versions of ENDF/B.  Isotopic $Q$-values and cross sections
 are not available in the files.  It will usually be possible to define
 adequate cross sections, yields, and spectra for the element.  However,
 it is clear that the available energy should be computed with an
@@ -325,11 +325,11 @@ contributions needed for the first term.  These are
 \end{equation}
 \vspace{0.5 pt}
 
-The Q value is zero for elastic and inelastic scattering.  For
+The $Q$-value is zero for elastic and inelastic scattering.  For
 (n,n$'$) particle reactions represented by scattering with an
 LR flag set, Q is the ENDF ``C1'' field from MF=3.  For most
 other reactions, Q is the ``C2'' field from MF=3.  HEATR allows
-users to override any Q value with their own numbers.
+users to override any $Q$-value with their own numbers.
 
 The $\overline{E}_n$ value as used in Eq.~\ref{nkerm} is
 defined to include multiplicity.  The multiplicity is either
@@ -410,10 +410,10 @@ subtracted from the neutron contribution.
 \label{sssHEATR_fissionKERMA}
 
 The partial KERMA for fission is a special case due to the particular
-problems with obtaining the Q value for fission\index{fission Q}.
-First, the fission Q value given in the C1 field of MF=3 includes
+problems with obtaining the $Q$-value for fission\index{fission Q}.
+First, the fission $Q$-value given in the C1 field of MF=3 includes
 delayed neutron and gamma contributions that we need to exclude,
-and second, the Q value for fission is energy dependent.
+and second, the $Q$-value for fission is energy dependent.
 
 As a result, the KERMA for fission will be calculated differently
 when compared to the other reactions which use Eq.~\ref{nkerm} as is.
@@ -450,7 +450,7 @@ $Q_p$ as as follows:
 \end{equation}
 
 Using these fission energy release components, we can define the
-fission reaction Q value (i.e. the energy released through the fission
+fission reaction $Q$-value (i.e. the energy released through the fission
 reaction) as the prompt fission energy release minus the incident
 neutron energy:
 \begin{equation}
@@ -492,13 +492,13 @@ follows:
     \Bigl[E + Q(E) - \overline{\nu}(E)\overline{E}(E)\Bigr]\sigma_{f}(E)
 \label{fkerm-nomt458}
 \end{equation}
-where the fission Q value is approximated using the thermal point
+where the fission $Q$-value is approximated using the thermal point
 energy dependencies defined for MT458:
 \begin{equation}
    Q(E) = Q_{\text{ENDF}} - 8070000 \left(\overline{\nu}(E)-\overline{\nu}(0)\right) + 0.307 E
 \end{equation}
 
-In this equation, $Q_{\text{ENDF}}$ is the reaction Q value for fission
+In this equation, $Q_{\text{ENDF}}$ is the reaction $Q$-value for fission
 as given in MF3.
 
 \subsection{Kinematic Limits}
@@ -1185,14 +1185,14 @@ They were used to prepare Fig.~\ref{f3}, and may be of interest
 to specialists, but they are not needed for most libraries.
 
 In a few cases in the past, it has been necessary to change
-the Q values that are normally retrieved from the ENDF tape.
+the $Q$-values that are normally retrieved from the ENDF tape.
 In addition, it is sometimes necessary to replace the single
-Q value supplied in MF=3 with an energy-dependent Q function
+$Q$-value supplied in MF=3 with an energy-dependent Q function
 for an element.  One example of the former occurred for $^{16}$O
 for ENDF/B-V.  The first inelastic level (MT=51) decays by
 pair production rather than the more normal mode of photon
 emission.  In order to get the correct heating, it was necessary
-to change the Q value by giving Card 4 and Card 5 as follows:
+to change the $Q$-value by giving Card 4 and Card 5 as follows:
 
 \small
 \begin{ccode}
@@ -1204,10 +1204,10 @@ to change the Q value by giving Card 4 and Card 5 as follows:
 \normalsize
 
 \noindent
-That is, the Q value is increased by twice the electron energy
+That is, the $Q$-value is increased by twice the electron energy
 of 0.511 MeV.  Another example is the sequential (n,2n)
 reaction for $^{9}$Be in ENDF/B-V.  It is necessary to include
-4 changes to the Q values:
+4 changes to the $Q$-values:
 
 \small
 \begin{ccode}
@@ -1219,7 +1219,7 @@ reaction for $^{9}$Be in ENDF/B-V.  It is necessary to include
 \normalsize
 
 \noindent
-The next example illustrates using energy-dependent Q values
+The next example illustrates using energy-dependent $Q$-values
 \index{energy-dependent Q} for elemental titanium.  Set
 \cword{nqa} equal to 3 and give the following values on
 Cards 4, 5, and 5a:
@@ -1326,8 +1326,8 @@ in ENDF/B-VII.0 $^{27}$Al is shown below:
 
 \noindent
 Note the identification and Q information printed on the first
-line; \cword{q} is the ENDF Q value from File 3, and \cword{q0} is
-the corresponding mass-difference Q value needed for Eq.~\ref{kij}.
+line; \cword{q} is the ENDF $Q$-value from File 3, and \cword{q0} is
+the corresponding mass-difference $Q$-value needed for Eq.~\ref{kij}.
 The \cword{ebar}, \cword{yield} (which was replaced by ``...''
 to make this listing fit better), and \cword{xsec} columns contain
 $\overline{E}_n$, $Y$, and $\sigma$, respectively.   The
@@ -2019,7 +2019,7 @@ for its distributions; if so, it arranges to make multiple passes
 through the reaction's energy grid, one pass for each subsection
 of the MF=6 section, and perhaps one additional pass to synthesize
 the missing recoil subsection.  It is now possible to select the
-appropriate Q value and particle yield, and to initialize the
+appropriate $Q$-value and particle yield, and to initialize the
 appropriate calculational routine.  This routine will be
 \cword{sixbar}\index{sixbar@{\ty sixbar}} for all reactions
 described in File 6, \cword{disbar}\index{disbar@{\ty disbar}} for
@@ -2580,19 +2580,19 @@ better, and the log-log plots expand the low-energy range.
   This is an evaluation error.
 
 \item[\cword{message from hinit---mt458 is missing for this mat}] ~\par
-  The fission Q value cannot be adjusted for delayed effects.
+  The fission $Q$-value cannot be adjusted for delayed effects.
 
 \item[\cword{message from hinit---photon momentum recoil used}] ~\par
 
 \item[\cword{message from hinit---one-particle recoil approx. used}] ~\par
 
 \item[\cword{message from nheat---changed Q from --- to ---}] ~\par
-  The fission Q value is adjusted from the total (non-neutrino)
+  The fission $Q$-value is adjusted from the total (non-neutrino)
   value given in File 3 to a prompt value using the delayed neutron
   energy from MF=1/MT=458.
 
 \item[\cword{error in nheat***binding energy for sequential n,2n needed}] ~\par
-  The user must enter special Q values for the ENDF/B evaluation for $^{9}$Be.
+  The user must enter special $Q$-values for the ENDF/B evaluation for $^{9}$Be.
   See the discussion in Section~\ref{ssHEATR_inp}.
 
 \item[\cword{error in nheat***storage exceeded}] ~\par
@@ -2722,7 +2722,7 @@ currently dimensioned as follows:
 \begin{center}
 \begin{tabular}{cl}
 100 & coarse grid points \\
-30 & auxiliary Q values \\
+30 & auxiliary $Q$-values \\
 25 & partial KERMAS (7 when kinematic limits are requested) \\
 10000 & words of energy-dependent Q data \\
 10000 & maximum for File 5 or 15 raw data \\

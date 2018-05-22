@@ -629,8 +629,8 @@ probability tables, is
 \small
 \begin{ccode}
 
-[MAT,2,153/ ZA, AWR, 0, 0, 0, NBIN ] HEAD
-[MAT,2,153/ TEMZ, 0, LSSF, ICOMP, NW, NUNR/
+[MAT,2,153/ ZA, AWR, IINEL, IABSO, 0, NBIN ] HEAD
+[MAT,2,153/ TEMZ, 0, LSSF, 0, NW, NUNR/
             EUNR(1),
             PROB(1,1),...,PROB(1,NBIN),
             TOTL(1,1),...,TOTL(1,NBIN),
@@ -644,6 +644,16 @@ probability tables, is
 
 \end{ccode}
 \normalsize
+
+\noindent
+\cword{IINEL} and \cword{IABSO} are the inelastic and absorption competition flags used
+to define defines the reactions that compete with the unresolved fluctuations. If no
+competition is present, the flag is set to -1. If there is only a single reaction that
+competes with the unresolved energy region, then the flag is set to be equal to the MT
+number of that reaction. For the inelastic competition flag, this would be 4, 51 or 91.
+If more than one reaction competes with the unresolved resonance region, the flag is set
+to 0. In versions of NJOY prior to NJOY 2016.35, these flags were defined differently and
+stored in a single ENDF field.
 
 \noindent
 Here \cword{NBIN} is the number of bins in the probability table, and
@@ -663,11 +673,7 @@ There is a section like this added for each temperature \cword{TEMZ}
 on the output PENDF tape.  In addition, \cword{lssf} is the flag that
 tells whether the quantities given are cross sections, or whether they
 are factors to be applied to the corresponding infinitely-dilute cross
-sections, and \cword{ICOMP} defines the reactions that compete with
-the unresolved fluctuations: \cword{ICOMP}=1000*\cword{iabso}+\cword{iinel},
-where \cword{iabso} is the MT number for absorption competition (for
-example, 103), and \cword{iinel} is the MT number for inelastic
-competition (either 4 or 51).
+sections.
 
 The heating values read in by \cword{rdheat} from the input PENDF file
 are the heat production in eV-barns for the heating reactions found.

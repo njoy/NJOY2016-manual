@@ -2836,18 +2836,36 @@ indicate that \cword{MAT1}=\cword{MAT}=1326.
   This is done by specifying the input and output tapes and up to five cards
   with individual \cword{MT} numbers.  If the user attempts to
   specify more than 5 \cword{MT} values, this error message occurs.
+%% we leave this out for the moment until we decide what to do with it
+%\item[\cword{error in errorr***errorr in 999 option}]~\par
+%  This is related to an undocumented feature in which ERRORR is used to
+%  insert a dummy MF33 file into an evaluation.
 
-\item[\cword{error in errorr***nstand should be different from nendf}]~\par
+\item[\cword{error in errorr***nstan should be different from nendf}]~\par
   Check the input files.
+
+\item[\cword{message from errorr---input weighting function not supported}] ~\par
+  The \cword{iwt} option is not recognized and ERRORR will set it to 6,
+  which is the default value.
+
+\item[\cword{message from errorr---reset legord from ... to 1}] ~\par
+  Only a legendre order of 1 is accepted at this time.
 
 \item[\cword{error in errorr***illegal iread=---}]~\par
   Currently defined values are 0, 1, and 2.
 
-\item[\cword{error in errorr***ngout must be nonzero when ...}]~\par
-  The \cword{ngout} unit must be used mfcov=31, 35, or 40.
+\item[\cword{error in errorr***ngout must be nonzero when mfcov =...}]~\par
+  The \cword{ngout} unit must be used when mfcov=31, 35, or 40.
 
 \item[\cword{error in errorr***mfcov=35 requested but no spectra present}]~\par
-  The ENDF data doesn't support a request for mfcov=35.
+  The ENDF data doesn't support a request for mfcov=35. GROUPR should be run
+  prior to ERRORR to include this data on the \cword{ngout} unit.
+  
+\item[\cword{message from errorr---mf35 processing with mf5 spectrum vector}] ~\par
+
+\item[\cword{message from errorr---mf35 processing with mf6 spectrum matrix}] ~\par
+  ERRORR can either use data from mf5 or mf6 when processing covariances from
+  mf35.
 
 \item[\cword{error in errorr***User ifissp -- not found.}]~\par
   When processing \cword{MF}=35 data, the original tape shall contain
@@ -2859,14 +2877,17 @@ indicate that \cword{MAT1}=\cword{MAT}=1326.
   Can occur in a number of ERRORR's routines, not just \cword{errorj}.  The
   source code should be examined to see what array needs to be increased.
 
-\item[\cword{error in errorr***no covariance data found for user ifissp.}]~\par
+\item[\cword{error in errorr***no covariance data found for user ifissp/efmean}]~\par
   When processing \cword{MF}=35 data, the original tape shall contain
-  information
-  for a number of energy intervals.  The user may specify an energy
+  information for a number of energy intervals.  The user may specify an energy
   interval with \cword{ifissp} or define \cword{ifissp}=-1 and then
   specify a specific mean energy \cword{efmean}.  If the specified energy
   is outside the range of the energy intervals on the input tape, this
   message results.
+
+\item[\cword{message from errorr---only one subsection}] ~\par
+  The \cword{MF}=35 data contains only one covariance energy interval. The
+  value of efmean is reset to the average value of the energy interval.
 
 \item[\cword{error in errorr***nendf-to-nendf2 copy for matd failed.}]~\par
   This error should not occur.  It means that an attempt to create a scratch
@@ -2880,7 +2901,20 @@ indicate that \cword{MAT1}=\cword{MAT}=1326.
   The allocatable array \cword{dict} has length \cword{nwi}=4000.  It needs to
   be increased.
 
+\item[\cword{message from errorr---ignoring unknown mt = ...}] ~\par
+  The covariance data contains one of the following mt numbers: 850, 871 to 874 or
+  is larger than 891. None of these numbers are legal mt numbers.
+
+\item[\cword{error in errorr***too many reactions for mf34.}]~\par
+  This only occurs for \cword{MF}=34 when there is no GENDF input
+  on unit \cword{ngout}.
+
+\item[\cword{error in errorr***too many lumped reaction types.}]~\par
+  This only occurs when too many sections with mt numbers between 851 to 870
+  appear in the ENDF file. Normally, ERRORR should be able to handle it.
+
 \item[\cword{error in errorr***too many reaction types.}]~\par
+\item[\cword{error in gridd***too many reaction types.}]~\par
   This error occurs in runs with \cword{iverf}=4 if the number of
   requested covariance reactions is more than 60.  A possible solution is
   to use the \cword{iread}=1 option to select only the most needed
@@ -2897,12 +2931,23 @@ indicate that \cword{MAT1}=\cword{MAT}=1326.
 \item[\cword{error in errorr***too many standards redefined.}]~\par
   Limit is 5.  See input for \cword{nstan.ne.0.}
 
+\item[\cword{error in errorr***no data on file for mfcov= ....}]~\par
+  The ENDF tape does not appear to contain any section of the requested
+  type. Check the ENDF file or check the \cword{mfcov} value in the
+  input file.
+
+\item[\cword{error in errorr***ngout input tape is required.}]~\par
+  ERRORR cannot continue without the multigroup data from GROUPR. A
+  GROUPR run should be included prior to calling ERRORR.
+
 \item[\cword{error in gridd***not coded for nmt1>1 of mf34}]~\par
   When processing angular distribution uncertainty data (\cword{MF}=34), ERRORR
   can only handle Legendre coefficient uncertainty data (LTT=1).
 
 \item[\cword{error in gridd***illegal mt1=0.}]~\par
-  Probably a fault in the evaluation.
+  There is fault in the evaluation.  Evaluator may have meant to indicate
+  \cword{MT1}=\cword{MT}.  If so, change the data value for \cword{MT1} on
+  \cword{nendf} from 0 to \cword{MT} and resubmit.
 
 \item[\cword{error in gridd***mt --- referenced in derivation ....}]~\par
   There is a fault in the evaluation or input.
@@ -2919,29 +2964,24 @@ indicate that \cword{MAT1}=\cword{MAT}=1326.
 \item[\cword{error in gridd***covariances of reaction....}]~\par
   There is a fault in the evaluation.
 
-\item[\cword{error in gridd***nc subsection too big....}]~\par
+\item[\cword{error in gridd***... subsection too big, see nwscr}]~\par
   Increase \cword{nwscr} in this subroutine.
 
-\item[\cword{error in gridd***ni subsection too big....}]~\par
-  Increase \cword{nwscr} in this subroutine.
+\item[\cword{error in gridd***nx is too large, increase nxmax}]~\par
+  Increase \cword{nxmax} in this subroutine.
 
 \item[\cword{error in gridd***too many reaction types.}]~\par
-This error occurs if \cword{iverf}=5 and if the requested number of
-covariance reactions is greater than 60.  If cross-material covariances
-are not needed, then a possible solution is to use the \cword{iread}=1
-option to select only the most needed reactions.
+  This error occurs if \cword{iverf}=5 and if the requested number of
+  covariance reactions is greater than 60.  If cross-material covariances
+  are not needed, then a possible solution is to use the \cword{iread}=1
+  option to select only the most needed reactions.
 
-\item[\cword{error in gridd***illegal mt1=0.}]~\par
-There is fault in the evaluation.  Evaluator may have meant to indicate
-\cword{MT1}=\cword{MT}.  If so, change the data value for \cword{MT1} on
-\cword{NENDF} from 0 to \cword{MT} and resubmit.
-
-\item[\cword{error in merge***storage exceeded.}]~\par
-Either the number of points in the x grid exceeds \cword{nxmax}=5000
-or the number in the y grid exceeds \cword{nenimx}=5000.
+\item[\cword{error in merge***... storage exceeded.}]~\par
+  Either the number of points in the x grid exceeds \cword{nxmax}=5000
+  or the number in the y grid exceeds \cword{nenimx}=5000.
 
 \item[\cword{error in merge***y(---)=--- lt y(---)=---.}]~\par
-This problem should not occur.
+  This problem should not occur.
 
 \item[\cword{error in grist***standards tape bad.}]~\par
   There is a fault in the evaluation.  Standards reactions must have at
@@ -2980,6 +3020,9 @@ This problem should not occur.
   and the reactions encountered in the ENDF file.  This problem should
   not occur.
 
+\item[\cword{message from covcall---WARNING!  izap=0 for mf40 ...}] ~\par
+  Because of this, the title of the covariance plot may be ambiguous.
+
 \item[\cword{error in covcal***storage exceeded in scr.}]~\par
   There is insufficient space to store the information from NI-type
   sub-sub-sections.  Increase the size of \cword{namx}=2000000.
@@ -3003,6 +3046,12 @@ This problem should not occur.
 
 \item[\cword{error in sumchk***endf file error....}]~\par
   The \cword{MF}=35 matrix must be symmetric and the \cword{lb} flag must be 7.
+
+\item[\cword{message from sumchk---zero-sum test passed}] ~\par
+
+\item[\cword{message from sumchk---zero-sum test failed}] ~\par
+  These messages inform the user whether or not the covariance matrix
+  passes the zero sum test.
 
 \item[\cword{error in sumchk***ne, ncove mismatch.}]~\par
   This error should not occur.  It means that the number of elements
@@ -3032,8 +3081,15 @@ This problem should not occur.
 \item[\cword{error in spcint***not ready for mf=6, mt=---, law=--.}]~\par
   We can only calculate the spectrum integral for \cword{LAW}=1 at this time.
 
+\item[\cword{message from covbin---converting mf35 data to errorj format}] ~\par
+  The coding in ERRORR assumes absolute covariances of the probability
+  distribution function while ENDF-6 formatted files use covariances of the
+  bin probabilities. This message informs the user of this fact.
+
 \item[\cword{error in rdgout***mat --- not found.}]~\par
   Cannot find \cword{MAT} on multigroup library.
+
+\item[\cword{message from rdgout---mf---, mt--- not found.}] ~\par
 
 \item[\cword{error in rdgout***mf---, mt--- not found.}]~\par
   Cannot find requested group structure or cross sections on
@@ -3066,14 +3122,40 @@ This problem should not occur.
   in mf2.  Processing will continue but covariance data for the complete
   set of mf2 URR parameters is incomplete.
 
+\item[\cword{message from resprx---mls=..., nls=... are inconsistent}] ~\par
+  The \cword{nls} value for mf32 URR data and the \cword{mls} value for the
+  scattering radius uncertainty are inconsistent. The uncertainty of the
+  scattering radius will be ignored by ERRORR.
+
+\item[\cword{message from resprx---user override for scattering radius unc.}] ~\par
+  A message to inform the user that a user provided uncertainty is used
+  for the scattering radius.
+
+\item[\cword{message from resprx---scat. radius unc not ready for lrf=7}] ~\par
+  When LRF=7 is used for the resolved resonances in MF=2, the uncertainty
+  for the scattering radius cannot be used for the moment.
+
 \item[\cword{error in resprx***illegal isr.}]~\par
   Only \cword{isr}=0 allowed.
 
 \item[\cword{error in rpxsamm***storage exceeded.}]~\par
   Increase \cword{nwds}, currently 1500000, in \cword{covout}.
 
+\item[\cword{message from rpxsamm---convergence issue for e=...}] ~\par
+  When calculating the cross section and derivatives, ERRORR has not been
+  able to converge the values due to a very steep increase or decrease of 
+  the cross section. The user should check the reconstructed cross section
+  at the energy indicated by the message.
+
+\item[\cword{message from rpxlc0---lcomp=0 scattering radius unc not included}] ~\par
+  When using the LCOMP=0 option in the MF32 covariance data, ERRORR cannot
+  account for scattering radius uncertainty.
+
 \item[\cword{error in rpxlc0***storage exceeded.}]~\par
   See \cword{maxnls}=10.
+
+\item[\cword{error in rpxlc0***scr storage exceeded.}]~\par
+  See \cword{nwscr}=1400000.
 
 \item[\cword{error in rpxlc0***not allowed lrf.}]~\par
   Only \cword{lrf}=1 or 2 allowed here.
@@ -3084,7 +3166,7 @@ This problem should not occur.
 \item[\cword{error in rpxlc0***bad covariance data for....}]~\par
   Wrong number of resonance parameters, negative diagonal elements, etc.
 
-\item[\cword{error in rpxlc12***cannot hand RML with isammy=0.}]~\par
+\item[\cword{error in rpxlc12***cannot handle RML with isammy=0.}]~\par
   You must set \cword{isammy}=1 to get the derivatives for RML parameters.
 
 \item[\cword{error in rpxlc12***different type of resonance for....}]~\par
@@ -3107,6 +3189,12 @@ This problem should not occur.
 \item[\cword{error in rpxlc12***lcomp=1 general form.}]~\par
   This value of \cword{lrf} is not coded.
 
+\item[\cword{message from rpxlc12---no scattering radius uncertainty}] ~\par
+
+\item[\cword{message from rpxlc12---include scattering radius uncertainty}] ~\par
+  Informative message to indicate whether or not scattering radius uncertainty
+  is present in the data.
+
 \item[\cword{error in rpxlc12***problem.}]~\par
   Resonance parameter data were read frm \cword{MF}=32, but no corresponding
   resonance is defined in \cword{MF}=2.  This indicates an error in the
@@ -3121,11 +3209,12 @@ This problem should not occur.
 \item[\cword{error in rpxlc2***a array storage exceeded.}]~\par
   Increase \cword{nwds}, currently 1500000, in \cword{covout}.
 
-\item[\cword{error in rpxlc2***no RR uncertainties in mf32.}]~\par
-  Check the evaluation for uncertainty data.
+\item[\cword{message from rpxlc12---ndigit from file is zero ...}] ~\par
 
 \item[\cword{error in rpxlc2***illegal value of ndigit.}]~\par
-  The \cword{ndigit} value can vary from 2 through 6.
+  The \cword{ndigit} value given in the ENDF file for an INTG record
+  can vary from 2 through 6. If it is 0, this defaults to 2 while other
+  values are illegal.
 
 \item[\cword{error in rpxlc2***not ready for lrf= ...}]~\par
    Coding for this lrf/lcomp=2 combination has not yet been implemented.
@@ -3141,16 +3230,10 @@ This problem should not occur.
 \item[\cword{error in rpendf***number of pointwise xsec of res exceede...}]~\par
   See \cword{maxe}=600000.
 
-\item[\cword{error in resdumr***lru=2/lrf=1/lfw=0: amu? no coding.}]~\par
-  Obsolete message.
-
-\item[\cword{error in resdumr***lru=2/lrf=1/lfw=1: amu? no coding.}]~\par
-  Obsolete message.
-
-\item[\cword{error in resdumr***lru=---, lrf=-- no coding.}]~\par
+\item[\cword{error in dumrd2***lru=---, lrf=-- no coding.}]~\par
   Option not supported.
 
-\item[\cword{error in resdumr***nlru2 exceeeded mxlru2}]~\par
+\item[\cword{error in dumrd2***nlru2 exceeeded mxlru2}]~\par
   See \cword{mxlru2}=100.
 
 \item[\cword{error in rxgrpg***i0>ipoint not coded.}]~\par
@@ -3162,6 +3245,19 @@ This problem should not occur.
 
 \item[\cword{error in skiprp***no coding type lrf=--.}]~\par
   The \cword{lrf} value is limited to 1 through 3.
+
+\item[\cword{message from grpav4---skipping over mf=3, mt=...}] ~\par
+  ERRORR does not need the data and skips over it.
+
+\item[\cword{message from grpav4---collapsing NGOUT mf=3, mt=...}] ~\par
+  The GROUPR tape uses a group structure different from the one used by ERRORR.
+  ERRORR will take the GORUPR data and collapse it to the grid it needs.
+
+\item[\cword{message from grpav4---mf --- mt --- has thresh gt highest ...}]~\par
+  Though not a fatal error, this message often precedes an abort in
+  \cword{covcal} caused by the absence of this reaction on
+  \cword{ngout}.  If \cword{iread}=1, then delete this reaction from
+  the requested list of covariance reactions.
 
 \item[\cword{error in grpav4***not coded for multimaterial group av'g.}]~\par
   Single material \cword{mfcov}=34 data only.
@@ -3187,7 +3283,7 @@ This problem should not occur.
   Covariances between different MT values are not supported for \cword{MF}=34.
   This is likely a fault in the evaluation.
 
-\item[\cword{error in sigc***covariance reaction missing from lump'g ....}]~\par
+\item[\cword{error in sigc***covariance reaction missing from lumping ...}]~\par
   A covariance reaction in the \cword{mt} 851 to 870 range cannot be found in
   the lumped reaction definition tables.  This problem should not occur.
 
@@ -3237,8 +3333,17 @@ This problem should not occur.
 \item[\cword{error in grpav***not coded for multimat group averaging....}]~\par
   The \cword{iread}=2 and \cword{ngout}=0 options are not compatible.
 
+\item[\cword{message from grpav---mt3 cross sections are constructed ...}] ~\par
+  The ENDF tape contains mt3, which is defined as the total cross section
+  minus the elastic scattering cross section. ERRORR will not calculate the
+  multigroup cross section from the data on the ENDF tape.
+
 \item[\cword{error in colaps***ngout is not a groupr output tape.}]~\par
   Check your input.
+
+\item[\cword{error in colaps***did not find expected mf1, mt451.}]~\par
+  The GROUPR tape should start with an mf1/mt451 section. Check the file
+  on \cword{ngout}.
 
 \item[\cword{error in colaps***storage exceeded.}]~\par
   Check \cword{nwscr}.  This error should not occur as the array allocation

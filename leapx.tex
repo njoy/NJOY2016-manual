@@ -1050,7 +1050,7 @@ been changes.
    ! card 4 - endf output control
    !    mat     endf mat number
    !    za      1000*z+a for principal scatterer
-   !    isabt   sab type (0=s, 1=ss, def=0)
+   !    isabt   sab type (0=symmetric, 1=asymmetric, def=0)
    !    ilog    log flag (0=s, 1=log10(s), def=0)
    !    smin    minimum S(alpha, beta) stored in file (def=1e-75)
    !
@@ -1183,7 +1183,7 @@ Graphite        &  31  &  UC              &  76 \\ \hline
 Some of these files (Al, Fe, U in UO$_2$,
 and O in UO$_2$) were also available in ENDF/B-VII.0 with non-standard
 material numbers.  The appropriate value to be used for \cword{za} is
-fairly obvious.  The parameter \cword{isym} controls whether the
+fairly obvious.  The parameter \cword{isabt} controls whether the
 output ENDF tape contains the symmetric $S(\alpha,\beta)$ or the
 asymmetric ${\cal S}(\alpha,\beta)$.  The second option gives much
 better numerics, especially on short-word machines, but it is not
@@ -3046,4 +3046,3 @@ Fortran-90 ``kind'' mechanism.
 \end{description}
 
 \cleardoublepage
-

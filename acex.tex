@@ -1312,7 +1312,7 @@ version to see if there have been any changes.
    !               8   read type 2 ace files to print or edit
    !                set iopt negative for mcnpx format
    !    iprint   print control (0 min, 1 max, default=1)
-   !    itype    ace output type (1, or 2, default=1)
+   !    itype    ace output type (1, 2, or 3, default=1)
    !    suff     id suffix for zaid (default=.00)
    !    nxtra    number of iz,aw pairs to read in (default=0)
    ! card 3
@@ -1331,6 +1331,14 @@ version to see if there have been any changes.
    !               law 61, and outgoing particle distributions.
    !               (0=no, 1=yes, default=1)
    !    iopp     detailed photons (0=no, 1=yes, default=1)
+   !    ismooth  switch on/off smoothing operation (1/0, default=1=on)
+   !               set ismooth to 1 to cause extension of mf6 cm
+   !               distributions to lower energies using a sqrt(E)
+   !               shape, to extend delayed neutron distributions as
+   !               sqrt(E) to lower energies, and to add additional
+   !               points above 10 Mev to some fission spectra assuming
+   !               an exponential shape.  otherwise, use ismooth=0.
+   !               NOTE:  ismooth=0 is the default value in njoy99.
    ! card 7
    !  type of thinning is determined by sign of thin(1)
    !  (pos. or zero/neg.=energy skip/integral fraction)
@@ -1376,6 +1384,8 @@ version to see if there have been any changes.
    !
    ! card 11
    !    matd     material to be processed
+   !             photoatomic data on nendf
+   !             atomic relaxation data on npend
    !
    !   --- photo-nuclear data (iopt=5 only) ---
    !
@@ -2506,6 +2516,15 @@ and heating values, and angle or energy distributions as
 
 \item[\cword{error in acer***illegal iopt}] ~\par
   \cword{IOPT} must be between 1 and 5, 7 and 9.
+
+\item[\cword{error in acer***illegal newfor.}] ~\par
+  Check the input, the value for the format option must be either 0 or 1.
+
+\item[\cword{error in acer***illegal iopp.}] ~\par
+  Check the input, the value for the photon option must be either 0 or 1.
+
+\item[\cword{error in acer***illegal ismooth.}] ~\par
+  Check the input, the value for the smoothing option must be either 0 or 1.
 
 \item[\cword{error in first***desired temperature not found}] ~\par
   Desired temperature was not found on the input PENDF tape.

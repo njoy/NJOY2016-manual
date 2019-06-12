@@ -1338,10 +1338,16 @@ asymptotic formulas.
     There is not enough room in the \cword{b} array.  Increase
     \cword{nb}, which currently is 5000.
 
+\item[\cword{error in rdunf2***energy dependent data undefined}] ~\par
+    When using unresolved resonance formalisms with energy dependent
+    parameters (e.g. the fission width, etc.), these data need to be
+    defined over the entire unresolved resonance region. In rare cases,
+    such as ENDF/B-VII.0 Pu239, this is not the case, leading to NaN
+    cross section values. This is an evaluation error.
+
 \item[\cword{error in rdunf2***storage exceeded}] ~\par
     There is not enough room in \cword{arry}.  Increase the
     value of \cword{maxarry}, which currently is 10000.
-
 
 \item[\cword{error in unresl***storage exceeded}] ~\par
     The code is currently limited to 50 spin sequences.  For

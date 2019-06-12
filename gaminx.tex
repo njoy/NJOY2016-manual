@@ -358,7 +358,8 @@ the comment cards at the beginning of the GAMINR module.
    !    ngg     number of groups
    !    egg     ngg+1 group bounds (ev)
    ! card5      (iwt=1 only)
-   !    wght    weight function as tab1 record
+   !    wght    read weight function as tab1 record,
+   !            this may span multiple lines and ends with a /.
    ! card6
    !    mfd     file to be processed
    !    mtd     section to be processed
@@ -389,7 +390,7 @@ the comment cards at the beginning of the GAMINR module.
    !
    !        iwt     meaning
    !        ---     -------
-   !         1      read in
+   !         1      read in smooth weight function
    !         2      constant
    !         3      1/e + rolloffs
    !
@@ -397,6 +398,10 @@ the comment cards at the beginning of the GAMINR module.
 
 \end{ccode}
 \normalsize
+
+The weight options allowed by GAMINR are a user defined function, a constant
+weight option and a $1/E$ option with high and low energy roll-offs. For more
+information, see the weight options in the \hyperlink{sGROUPRhy}{GROUPR} module.
 
 Note that both an ENDF/B tape and a PENDF tape from
 \hyperlink{sRECONRhy}{RECONR} are required.

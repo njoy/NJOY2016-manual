@@ -1603,11 +1603,11 @@ regardless of the actual storage medium.
    !
    ! 9/17/2012 ... important changes
    ! - ngout = input gendf input tape
-   !           -  this tape may contain multiple temperatures,
-   !              multiple Legendre moments and multiple sigma-0
-   !              data, but ...
-   !              - only the first (infinitely dilute) sigma-0
-   !                data will be used.
+   !           - this tape may contain multiple temperatures,
+   !             multiple Legendre moments and multiple sigma-0
+   !             data, but ...
+   !           - only the first (infinitely dilute) sigma-0
+   !             data will be used.
    !
    ! - card 3 is now REQUIRED and the specified temperature must
    !   be one of those on the gendf tape.
@@ -1642,8 +1642,8 @@ regardless of the actual storage medium.
    !    iprint  print option (0/1=minimum/maximum) (default=1)
    !    irelco  covariance form (0/1=absolute/relative) (default=1)
    !
-   !  card 3    *** REQIURED for njoy2012_0917 & later ***
-   !    mprint  print option for group averaging (0=min., 1=max.)
+   !  card 3    (*** REQUIRED for njoy2012 and later ***)
+   !    mprint  print option for group averaging (0/1=min (default)/max)
    !    tempin  temperature (default=300)
    !
    !---for endf/b version 4 (iverf=4) only--------------------------
@@ -1672,7 +1672,7 @@ regardless of the actual storage medium.
    !    irespr  processing for resonance parameter covariances
    !            (mf=32) (default=1)
    !            0 = area sensitivity method
-   !            1 = 1% sensitivity method
+   !            1 = 1\% sensitivity method
    !    legord  legendre order for calculating covariances (default=1)
    !            (if mfcov is not 34, legord is ignored)
    !    ifissp  subsection of the fission spectrum covariance
@@ -1691,7 +1691,7 @@ regardless of the actual storage medium.
    !            this subsection.
    !            (if mfcov is not 35, efmean is ignored)
    !    dap     user specified scattering radius uncertainty, given
-   !            as a fraction (i.e., dap=0.1 means 10% uncertainty
+   !            as a fraction (i.e., dap=0.1 means 10\% uncertainty
    !            in the scattering radius).  The default value is
    !            zero.  This variable is only defined for mfcov=33
    !            and if non-zero will be used in lieu of any data

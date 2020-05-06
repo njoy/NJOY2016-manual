@@ -2467,6 +2467,34 @@ up-to-date input instructions.
 \small
 \begin{ccode}
 
+   !-------------------------------------------------------------------
+   !
+   ! compute self-shielded group-averaged cross sections
+   !
+   ! Produces self-shielded cross sections, neutron scattering
+   ! matrices, and photon production matrices.  Scattering and
+   ! photon matrices may be self-shielded if desired (see init).
+   ! Bondarenko weighting is normally used.   Optionally, the flux
+   ! can be computed for an infinite mixture of heavy absorber
+   ! and light moderator.  Delayed neutron data and thermal
+   ! scattering matrices are handled specially.
+   !
+   ! The integration over initial energy is handled in the same
+   ! way for all reaction types by using the integrand
+   !                   feed*xsec*flux                   .
+   ! Feed is the source into final energy group gprime and
+   ! Legendre order l from initial energy e (see getff).  For
+   ! vectors, the feed is 1. or a yield (nubar, mubar).  For two
+   ! body scattering, a center-of-mass Gaussian integration is used
+   ! to obtain accurate results even for small Legendre components
+   ! of the group-to-group scattering.  Additional initial energy
+   ! quadrature points are added to integrate the known polynomial
+   ! order of this feed function.  Feed for tabulated continuum
+   ! reactions is computed exactly on the endf grid points and
+   ! then interpolated at e.  A special projection interpolation
+   ! scheme is used for thermal matrices (see getaed).  The feed
+   ! for analytic continuum reactions is exact.
+   !
    !---input specifications (free format)---------------------------
    !
    ! card1
@@ -2572,13 +2600,22 @@ up-to-date input instructions.
    !     16           vitamin-e 174-group structure
    !     17           vitamin-j 175-group structure
    !     18           xmas nea-lanl
-   !     all new additional group structure with 7 significant
-   !     decimal digits compatible with calendf
    !     19           ecco  33-group structure
    !     20           ecco 1968-group structure
    !     21           tripoli 315-group structure
    !     22           xmas lwpc 172-group structure
    !     23           vit-j lwpc 175-group structure
+   !     24           shem cea 281-group structure
+   !     25           shem epm 295-group structure
+   !     26           shem cea/epm 361-group structure
+   !     27           shem epm 315-group structure
+   !     28           rahab aecl 89-group structure
+   !     29           ccfe   660-group structure  (30 MeV)
+   !     30           ukaea 1025-group structure  (30 MeV)
+   !     31           ukaea 1067-group structure (200 MeV)
+   !     32           ukaea 1102-group structure   (1 GeV)
+   !     33           ukaea  142-group structure (200 MeV)
+   !     34           lanl 618-group structure
    !
    !     igg          meaning
    !     ---          -------
@@ -4407,7 +4444,7 @@ from the problem.
   Group structures must be given in ascending energy order.
 
 \item[\cword{error in gengpn***illegal group structure.}] ~\par
-  Check input; current legal values are 1 through 23.
+  Check input; current legal values are 1 through 34.
 
 \item[\cword{error in gengpg***illegal group structure.}] ~\par
   Check input; current legal values are 1 through 10.
@@ -4697,4 +4734,3 @@ from the problem.
 \end{description}
 
 \cleardoublepage
-

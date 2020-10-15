@@ -226,7 +226,7 @@ high energy band has not been thinned much at all, but the low energy
 band has lost 56\% of its points.
 
 The formats for storing energy grid and cross section data in an ACE
-library\index{ACE format} are completely described in \cite{ACEFormat}, 
+library\index{ACE format} are completely described in \cite{ACEFormat},
 but they will also be reviewed briefly here for the
 reader's convenience.  The principal cross sections are given in the
 ESZ block.  First, the NES energy values of the union grid are given,
@@ -1357,10 +1357,10 @@ version to see if there have been any changes.
    !    matd     material to be processed
    !    tempd    temperature desired (kelvin) (default=300)
    !    tname    thermal zaid name ( 6 char max, def=za)
+   !    nza      number of moderator component za values (default=3, max=16)
    ! card 8a
-   !    iza01    moderator component za value
-   !    iza02    moderator component za value (def=0)
-   !    iza03    moderator component za value (def=0)
+   !    iza      moderator component za values (up to a maximum of 16 values,
+   !             must be terminated by /)
    ! card 9
    !    mti      mt for thermal incoherent data
    !    nbint    number of bins for incoherent scattering
@@ -2800,4 +2800,3 @@ and heating values, and angle or energy distributions as
 \end{description}
 
 \cleardoublepage
-

@@ -2467,34 +2467,6 @@ up-to-date input instructions.
 \small
 \begin{ccode}
 
-   !-------------------------------------------------------------------
-   !
-   ! compute self-shielded group-averaged cross sections
-   !
-   ! Produces self-shielded cross sections, neutron scattering
-   ! matrices, and photon production matrices.  Scattering and
-   ! photon matrices may be self-shielded if desired (see init).
-   ! Bondarenko weighting is normally used.   Optionally, the flux
-   ! can be computed for an infinite mixture of heavy absorber
-   ! and light moderator.  Delayed neutron data and thermal
-   ! scattering matrices are handled specially.
-   !
-   ! The integration over initial energy is handled in the same
-   ! way for all reaction types by using the integrand
-   !                   feed*xsec*flux                   .
-   ! Feed is the source into final energy group gprime and
-   ! Legendre order l from initial energy e (see getff).  For
-   ! vectors, the feed is 1. or a yield (nubar, mubar).  For two
-   ! body scattering, a center-of-mass Gaussian integration is used
-   ! to obtain accurate results even for small Legendre components
-   ! of the group-to-group scattering.  Additional initial energy
-   ! quadrature points are added to integrate the known polynomial
-   ! order of this feed function.  Feed for tabulated continuum
-   ! reactions is computed exactly on the endf grid points and
-   ! then interpolated at e.  A special projection interpolation
-   ! scheme is used for thermal matrices (see getaed).  The feed
-   ! for analytic continuum reactions is exact.
-   !
    !---input specifications (free format)---------------------------
    !
    ! card1

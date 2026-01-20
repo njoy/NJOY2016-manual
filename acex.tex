@@ -682,6 +682,25 @@ MF=16$\times$MF=3 for all the photon reactions on the normal
 union energy grid.  Later, this total photon production cross
 section is written into the ACE GPD block in \cword{acelod}.
 
+The ENDF/B-VIII.1 library release is the first version of the ENDF/B library 
+that has evaluations with discrete primary capture photons in MF=6. The 
+primary photons are formatted differently than in the JENDL evaluations -- in
+the JENDL evaluations, the energy listed in MF=6 is the binding energy (as discrete
+primary energies are listed in MF=12). In the ENDF/B-VIII.1 evaluations, the 
+energies listed are the outgoing photon energy. NJOY2016 handles this format
+divergence by checking the library release number. Future releases of the ENDF/B 
+library may fix this discrepancy. For each discrete primary photon (at the first
+incident energy distribution), the following message is displayed:
+
+\begin{description}
+\begin{singlespace}
+
+\item[\cword{message from acelpp---Handling ENDF-8.1 discrete primary gamma }]~\par
+  \texttt{format by converting to JENDL format}
+
+\end{singlespace}
+\end{description}
+
 \paragraph{Photon Production Matrix.}
 The 30-by-20 photon production matrix is computed from input
 multi-group data.  Therefore, it is necessary to execute the

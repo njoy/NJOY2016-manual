@@ -1422,8 +1422,8 @@ polynomials by recursion.  The formulas are as follows:
 \begin{eqnarray}
    P_0(x) & = &  1.\,\,, \\
    P_1(x) & = &  x \,\,,\\
-   P_{\ell+1)}(x) & = & \frac{(2\ell-1)xP_\ell(x)-(\ell-1)P_{\ell-2}}
-       {\ell} \,\,,
+   P_{\ell}(x) & = & \frac{(2\ell-1)xP_{\ell-1}(x)
+        - (\ell-1)P_{\ell-2}(x)}{\ell} \,\,,
 \end{eqnarray}
 where $P_0$ is stored in \cword{p(1)}, $P_1$ is stored in
 \cword{p(2)}, and so on.
